@@ -16,7 +16,7 @@ body.pvp-mode #aiSettings,body.pvp-mode #ai,body.pvp-mode #aiBtn{display:none!im
 @media(max-width:900px){.lobby-grid{grid-template-columns:1fr}.lobby-pane{min-height:auto}.lobby-top{align-items:flex-start;flex-direction:column}}
 
 
-</style><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/></head><body>
+</style><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/></head><body>
 
 <div id="authScreen" class="screen-shell">
   <div class="auth-card">
@@ -99,6 +99,7 @@ const rnd=(a,b)=>MATCH_RANDOM()*(b-a)+a, randInt=(a,b)=>Math.floor(MATCH_RANDOM(
 function seededRandom(seed){let x=(Number(seed)||1)>>>0;return ()=>{x+=0x6D2B79F5;let t=x;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296}}
 let starting=[],bench=[],fitness={},perf={},my=0,aiScore=0,running=false,usedSubs=0,subWindows=0,subbedOut=new Set(),logData=[],AI_PLAYERS={},currentAbility=5,currentMinute=0;
 let injuryTarget=0,injurySchedule=new Set(),injuredPlayerIds=new Set();
+let MATCH_HOME_STARTERS=[],MATCH_HOME_SUBS=[],MATCH_GUEST_STARTERS=[],MATCH_GUEST_SUBS=[];
 let MATCH_CONTEXT={mode:'ai',variant:'friendly',opponent:'人机',opponentLevel:5};
 let PVP={channel:null,isHost:false,localReady:false,remoteReady:false,localLineup:null,remoteLineup:null,started:false,seed:null,hostName:null,guestName:null,subscribed:false,remoteOnline:false,pollTimer:null,handshakeTimer:null,lastInviteState:null,syncSeq:0,syncQueue:Promise.resolve(),pendingChoices:new Map(),choiceSeq:0,lastRemoteSeen:0,channelSetupBusy:false,mirrorRunStarted:false,mirrorRunTimer:null,guestUsedSubs:0,guestSubWindows:0,guestSubbedOut:new Set(),guestFitness:{},guestPerf:{},lastSyncSeq:0,channelRetryTimer:null,snapshotRequestTimer:null,lastSyncAt:0,fitnessSyncTimer:null,waitingForOperator:false};
 
@@ -369,7 +370,7 @@ function withLogMinute(t){
 }
 function isGoalLogText(t){
  const s=String(t);
- if(/未进|未能命中|扑出|机会|失误.*未/.test(s))return false;
+ if(/未进|未能进球|未能破门|未能命中|没有进球|未得分|未能得分|射偏|打偏|踢偏|顶偏|击中门框|击中立柱|击中横梁|扑出|错失|机会|失误.*未/.test(s))return false;
  return /破门|球进了|进球有效|点球命中|世界波|第\d+轮.*(?:主队|客队).*命中/.test(s);
 }
 function goalMarkedText(t){
@@ -1048,9 +1049,9 @@ if(type==='进球'){
   if(as){
    updatePerf(as.id,shoot==='头球'?.16:chanceCreationBonus(as.type));
    if(shoot==='头球'){
-    log(`🪂 ${as.comment}${p.name}完成头球攻门但未能得分；传球者获得小幅评分加成。`);
+    log(`🪂 ${as.comment}${p.name}完成头球攻门但未能得分。`);
    }else{
-    log(`✨ ${as.comment}${p.name}最终未能破门，但创造机会者获得评分奖励。`);
+    log(`✨ ${as.comment}${p.name}最终未能破门。`);
    }
   }
   let txt=shoot==='任意球'?`❌ ${p.name}任意球被扑出！`:shoot==='远射'?`❌ ${p.name}远射打飞！`:shoot==='头球'?`❌ ${p.name}头球顶偏！`:shoot==='单刀'?`❌ ${p.name}单刀失误！`:`❌ ${p.name}禁区内好机会被扑！`;
@@ -1088,9 +1089,9 @@ if(p){
  if(creator){
   updatePerf(creator.id,miss==='头球'?.16:chanceCreationBonus(creator.type));
   if(miss==='头球'){
-   log(`🪂 ${creator.comment}${p.name}${txt}；传球者${P[creator.id].name}获得小幅评分加成。`);
+   log(`🪂 ${creator.comment}${p.name}${txt}。`);
   }else{
-   log(`✨ ${creator.comment}${p.name}${txt}，但创造机会的${P[creator.id].name}获得正向评分。`);
+   log(`✨ ${creator.comment}${p.name}${txt}。`);
   }
  }
  log(`❌ ${p.name}${txt}！`);
@@ -1197,8 +1198,8 @@ async function guestKeyEvent(ability,forcedType=null){
    const rate=success(guestAttrPlayer(g,attKey,5),attr(keeper.id,'门线',5),5);
    const goal=randInt(0,100)<rate;
    if(shoot==='头球'&&headerPasser)guestUpdatePerf(headerPasser.id,.16);
-   if(goal){recordGoal('away');guestUpdatePerf(g.id,shoot==='头球'?1.35:1.25);applyConcededGoalPenalties(null,'open_play');logTeam('away',shoot==='头球'&&headerPasser?`⚽ ${headerPasser.name}送出传球，${g.name}头球破门！传球者获得小幅评分加成。`:`⚽ ${g.name}${shoot}破门！`)}
-   else{guestUpdatePerf(g.id,shoot==='单刀'?-.48:-.22);updatePerf(keeper.id,.35);logTeam('away',shoot==='头球'&&headerPasser?`🧤 ${headerPasser.name}送出传球，${g.name}完成头球攻门但未得分；传球者获得小幅评分加成。`:`🧤 ${g.name}${shoot}未能得分！`)}
+   if(goal){recordGoal('away');guestUpdatePerf(g.id,shoot==='头球'?1.35:1.25);applyConcededGoalPenalties(null,'open_play');logTeam('away',shoot==='头球'&&headerPasser?`⚽ ${headerPasser.name}送出传球，${g.name}头球破门！`:`⚽ ${g.name}${shoot}破门！`)}
+   else{guestUpdatePerf(g.id,shoot==='单刀'?-.48:-.22);updatePerf(keeper.id,.35);logTeam('away',shoot==='头球'&&headerPasser?`🧤 ${headerPasser.name}送出传球，${g.name}完成头球攻门但未得分。`:`🧤 ${g.name}${shoot}未能得分！`)}
    await animGuestShot(g,goal,shoot,headerPasser);return {goal:goal?-1:0};
  }
  if(type==='错失良机'){
@@ -1207,7 +1208,7 @@ async function guestKeyEvent(ability,forcedType=null){
    guestUpdatePerf(g.id,shoot==='单刀'?-.48:-.22);updatePerf(keeper.id,.25);
    if(shoot==='头球'&&headerPasser){
     guestUpdatePerf(headerPasser.id,.16);
-    logTeam('away',`❌ ${headerPasser.name}送出传球，${g.name}头球攻门未进；传球者获得小幅评分加成。`);
+    logTeam('away',`❌ ${headerPasser.name}送出传球，${g.name}头球攻门未进。`);
    }else logTeam('away',`❌ ${g.name}${shoot}错失良机！`);
    await animGuestShot(g,false,shoot,headerPasser);return {goal:0};
  }
@@ -1301,7 +1302,7 @@ async function autoPvPSubstitution(forced=false,injured=null){
  log(`🔄 自动换人：[${out.id}]${out.name}(${out.pos})↓ → [${inn.id}]${inn.name}(${out.pos})↑`);
  await animSub(out,inn);renderFitness();
 }
-async function substitution(forced=false,injured=null){if(subWindows>=maxSubWindows()||usedSubs>=maxSubs()){log('❌ 换人次数/人数已达上限！');return}if(!forced){let ans=await showChoice('战术换人窗口',`<p>已换 ${usedSubs}/${maxSubs()} 人；已使用 ${subWindows}/${maxSubWindows()} 个换人窗口。</p>`,[{label:'进行换人',value:true},{label:'不换人',value:false,class:'dangerbtn'}]);if(!ans)return}subWindows++;let must=injured;while(usedSubs<maxSubs()){let out=await chooseOutPlayer(must);if(!out)break;let reps=bench.filter(p=>p.pos.includes(out.pos)&&!subbedOut.has(p.id));if(!reps.length){log(`❌ 无适配【${out.pos}】替补！`);break}let inn=await showChoice(must?'伤病换人':'选择换上球员',`<p>${must?`必须换下 ${esc(out.name)}。`:''}仅显示可胜任【${out.pos}】的替补：</p>`+reps.map(p=>`<div class="rating"><span>${esc(p.name)}</span><b>初始体能 ${attr(p.id,'体能',7)}</b></div>`).join(''),reps.map(p=>({label:p.name,value:p})));if(perf[inn.id]===0)perf[inn.id]=5.5;fitness[inn.id]=+attr(inn.id,'体能',7);starting=starting.filter(p=>p.id!==out.id);bench=bench.filter(p=>p.id!==inn.id);starting.push({id:inn.id,name:inn.name,pos:out.pos});bench.push({id:out.id,name:out.name,pos:P[out.id].pos});subbedOut.add(out.id);usedSubs++;log(`🔄 换人：[${out.id}]${out.name}(${out.pos})↓ → [${inn.id}]${inn.name}(${out.pos})↑`);await animSub(out,inn);renderFitness();if(must){must=null;break}if(usedSubs>=maxSubs())break;let again=await showChoice('继续换人？',`<p>本窗口已累计换 ${usedSubs}/${maxSubs()} 人。</p>`,[{label:'继续',value:true},{label:'结束窗口',value:false,class:'dangerbtn'}]);if(!again)break}}
+async function substitution(forced=false,injured=null){if(subWindows>=maxSubWindows()||usedSubs>=maxSubs()){log('❌ 换人次数/人数已达上限！');return}if(!forced){let ans=await showChoice('战术换人窗口',`<p>已换 ${usedSubs}/${maxSubs()} 人；已使用 ${subWindows}/${maxSubWindows()} 个换人窗口。</p>`,[{label:'进行换人',value:true},{label:'不换人',value:false,class:'dangerbtn'}]);if(!ans)return}subWindows++;let must=injured;while(usedSubs<maxSubs()){let out=await chooseOutPlayer(must);if(!out)break;let reps=bench.filter(p=>p.pos.includes(out.pos)&&!subbedOut.has(p.id));if(!reps.length){log(`❌ 无适配【${out.pos}】替补！`);break}let inn=await showChoice(must?'伤病换人':'选择换上球员',`<p>${must?`必须换下 ${esc(out.name)}。`:''}仅显示可胜任【${out.pos}】的替补：</p>`+reps.map(p=>`<div class="rating"><span>${esc(p.name)}</span><b>初始体能 ${attr(p.id,'体能',7)}</b></div>`).join(''),reps.map(p=>({label:p.name,value:p})));if(perf[inn.id]===0)perf[inn.id]=5.5;fitness[inn.id]=+attr(inn.id,'体能',7);starting=starting.filter(p=>p.id!==out.id);bench=bench.filter(p=>p.id!==inn.id);starting.push({id:inn.id,name:inn.name,pos:out.pos});bench.push({id:out.id,name:out.name,pos:P[out.id].pos});recordHomeSubAppearance(inn,out.pos);subbedOut.add(out.id);usedSubs++;log(`🔄 换人：[${out.id}]${out.name}(${out.pos})↓ → [${inn.id}]${inn.name}(${out.pos})↑`);await animSub(out,inn);renderFitness();if(must){must=null;break}if(usedSubs>=maxSubs())break;let again=await showChoice('继续换人？',`<p>本窗口已累计换 ${usedSubs}/${maxSubs()} 人。</p>`,[{label:'继续',value:true},{label:'结束窗口',value:false,class:'dangerbtn'}]);if(!again)break}}
 
 function guestStartingPlayers(){
  return Object.entries(AI_PLAYERS).map(([slot,p])=>({slot,id:+(p.sourceId||slot),name:p.name,pos:p.pos||'',attrs:p.attrs||{}}));
@@ -1325,7 +1326,7 @@ async function guestSubstitution(){
   AI_PLAYERS[out.slot]={name:src.name,sourceId:inn.id,pos:out.pos,attrs:{...(src.attrs||{})}};
   PVP.guestFitness[inn.id]=+attr(inn.id,'体能',7);
   if(PVP.guestPerf[inn.id]==null)PVP.guestPerf[inn.id]=5.5;
-  PVP.guestSubbedOut.add(out.id);PVP.guestUsedSubs++;
+  recordGuestSubAppearance(inn,out.pos);PVP.guestSubbedOut.add(out.id);PVP.guestUsedSubs++;
   if(Array.isArray(PVP.remoteLineup)){
    const row=PVP.remoteLineup.find(x=>x.pos===out.pos);
    if(row)row.id=inn.id;
@@ -1440,6 +1441,7 @@ async function runPenaltyShootout(continuation=false){
    const hostLineup=PVP.isHost?PVP.localLineup:PVP.remoteLineup,guestLineup=PVP.isHost?PVP.remoteLineup:PVP.localLineup;
    applyLineupPayload(hostLineup);collect();currentAbility=5;AI_PLAYERS=buildPvPOpponent(guestLineup);MATCH_RANDOM=seededRandom(PVP.seed||1);
   }else{collect();currentAbility=+$('#ai').value;MATCH_RANDOM=Math.random;AI_PLAYERS=generateAI(currentAbility)}
+  initMatchRosterTracking();
  }
  $('#score').textContent='0 : 0';$('#minute').textContent='点球大战';idleScene();
  log(MATCH_CONTEXT.mode==='pvp'?`=== 点球大战开始：主队 ${PVP.hostName} VS 客队 ${PVP.guestName} ===`:`=== 点球大战开始：${LOBBY.currentUser||'我方'} VS 人机 ===`);
@@ -1486,9 +1488,66 @@ async function runPenaltyShootout(continuation=false){
  }
  const result=my>aiScore?'🎉 点球大战胜利！':'😢 点球大战失利';
  log('===== 点球大战结束 =====');log(MATCH_CONTEXT.mode==='pvp'?`🏆 点球大战比分：主队 ${PVP.hostName} ${my} - ${aiScore} 客队 ${PVP.guestName}`:`🏆 点球大战比分：${LOBBY.currentUser||'我方'} ${my} - ${aiScore} 人机`);
+ appendMatchRosterSummary();
  running=false;$('#state').textContent='已结束';$('#minute').textContent='点球大战结束';
- if(MATCH_CONTEXT.mode==='pvp'){pvpSync('finish',{result,home:my,away:aiScore,hostName:PVP.hostName,guestName:PVP.guestName,hostRows:[],guestRows:[],matchLog:[...logData],shootout:true});setTimeout(()=>{PVP.started=false},300)}
+ if(MATCH_CONTEXT.mode==='pvp'){pvpSync('finish',{result,home:my,away:aiScore,hostName:PVP.hostName,guestName:PVP.guestName,hostRows:hostResultRows(),guestRows:guestResultRows(),matchLog:[...logData],shootout:true});setTimeout(()=>{PVP.started=false},300)}
  showResult(result);
+}
+
+
+function initMatchRosterTracking(){
+ MATCH_HOME_STARTERS=starting.map(x=>({id:+x.id,name:x.name,pos:x.pos}));
+ MATCH_HOME_SUBS=[];
+ if(MATCH_CONTEXT.mode==='pvp'){
+  MATCH_GUEST_STARTERS=guestStartingPlayers().map(x=>({id:+x.id,name:x.name,pos:x.pos}));
+ }else{
+  MATCH_GUEST_STARTERS=Object.entries(AI_PLAYERS).map(([slot,p])=>({
+   id:p.sourceId!=null?+p.sourceId:`AI${slot}`,
+   name:p.name||`AI球员${slot}`,
+   pos:p.pos||'',
+   aiSlot:+slot
+  }));
+ }
+ MATCH_GUEST_SUBS=[];
+}
+function recordHomeSubAppearance(p,pos){
+ if(!p)return;
+ if(!MATCH_HOME_STARTERS.some(x=>+x.id===+p.id)&&!MATCH_HOME_SUBS.some(x=>+x.id===+p.id)){
+  MATCH_HOME_SUBS.push({id:+p.id,name:p.name,pos:pos||p.pos||''});
+ }
+}
+function recordGuestSubAppearance(p,pos){
+ if(!p)return;
+ if(!MATCH_GUEST_STARTERS.some(x=>+x.id===+p.id)&&!MATCH_GUEST_SUBS.some(x=>+x.id===+p.id)){
+  MATCH_GUEST_SUBS.push({id:+p.id,name:p.name,pos:pos||p.pos||''});
+ }
+}
+function homeMatchRosterRows(){
+ return [...MATCH_HOME_STARTERS.map(x=>({...x,status:'首发'})),...MATCH_HOME_SUBS.map(x=>({...x,status:'替补登场'}))]
+  .map(x=>({...x,score:scoreFromPerfValue(perf[x.id])}));
+}
+function guestMatchRosterRows(){
+ if(MATCH_CONTEXT.mode==='pvp'){
+  return [...MATCH_GUEST_STARTERS.map(x=>({...x,status:'首发'})),...MATCH_GUEST_SUBS.map(x=>({...x,status:'替补登场'}))]
+   .map(x=>({...x,score:scoreFromPerfValue(PVP.guestPerf?.[x.id])}));
+ }
+ return MATCH_GUEST_STARTERS.map(x=>({...x,status:'首发',score:6.5}));
+}
+function rosterLogLines(title,rows){
+ const starters=(rows||[]).filter(x=>x.status==='首发');
+ const subs=(rows||[]).filter(x=>x.status==='替补登场');
+ const fmt=x=>`${x.name}${x.pos?`（${x.pos}）`:''} ${Number(x.score||6.5).toFixed(1)}分`;
+ const lines=[`【${title}】`,`首发：${starters.length?starters.map(fmt).join('；'):'无'}`];
+ if(subs.length)lines.push(`替补登场：${subs.map(fmt).join('；')}`);
+ else lines.push('替补登场：无');
+ return lines;
+}
+function appendMatchRosterSummary(){
+ appendLogRaw('===== 出场阵容与评分 =====');
+ const homeTitle=MATCH_CONTEXT.mode==='pvp'?`主队 ${PVP.hostName||'主队'}`:(LOBBY.currentUser||'我方');
+ const awayTitle=MATCH_CONTEXT.mode==='pvp'?`客队 ${PVP.guestName||'客队'}`:(MATCH_CONTEXT.opponent||'AI');
+ rosterLogLines(homeTitle,homeMatchRosterRows()).forEach(appendLogRaw);
+ rosterLogLines(awayTitle,guestMatchRosterRows()).forEach(appendLogRaw);
 }
 
 function scoreUI(min){currentMinute=Number(min)||0;$('#score').textContent=`${my} : ${aiScore}`;$('#minute').textContent=min?`${min}'`:'赛前准备';pvpSync('score',{home:my,away:aiScore,min})}
@@ -1512,6 +1571,7 @@ async function run(){
  if(running||!validateLineup())return;
  running=true;$('#start').disabled=true;document.querySelectorAll('#lineup select,#ai').forEach(x=>x.disabled=true);$('#state').textContent='比赛中';$('#log').innerHTML='';logData=[];my=aiScore=usedSubs=subWindows=0;scoreUI(0);
  if(MATCH_CONTEXT.mode==='pvp'){const hostLineup=PVP.isHost?PVP.localLineup:PVP.remoteLineup,guestLineup=PVP.isHost?PVP.remoteLineup:PVP.localLineup;applyLineupPayload(hostLineup);collect();currentAbility=5;AI_PLAYERS=buildPvPOpponent(guestLineup);initGuestMatchStats(true);syncFitnessToGuest();MATCH_RANDOM=seededRandom(PVP.seed||1)}else{collect();currentAbility=+$('#ai').value;MATCH_RANDOM=Math.random;AI_PLAYERS=generateAI(currentAbility)}
+ initMatchRosterTracking();
  initMatchInjuries();
  idleScene();log(MATCH_CONTEXT.mode==='pvp'?`=== ${matchVariantLabel()}开始：主队 ${PVP.hostName} VS 客队 ${PVP.guestName} ===`:`=== ${matchVariantLabel()}开始：${LOBBY.currentUser||'我方'} VS ${MATCH_CONTEXT.opponent} ===`);log('比赛阵型：4-3-3');if(MATCH_CONTEXT.mode==='ai')log(`AI球队能力值：${currentAbility}`);
  let last=await playMinuteBlock([3,6,9,12,15,18,21,24,27,30,33,36,39,42,45],0,1);
@@ -1528,25 +1588,19 @@ async function run(){
      const tiedScore=`${my} : ${aiScore}`;log(`🥅 120分钟仍为 ${tiedScore}，进入点球大战。`);running=false;document.querySelectorAll('#lineup select,#ai').forEach(x=>x.disabled=false);return runPenaltyShootout(true);
    }
  }
- const result=my>aiScore?'🎉 胜利！':my===aiScore?'🤝 平局':'😢 失利';log('===== 全场结束 =====');log(MATCH_CONTEXT.mode==='pvp'?`🏆 最终比分：主队 ${PVP.hostName} ${my} - ${aiScore} 客队 ${PVP.guestName}`:`🏆 最终比分：${LOBBY.currentUser||'我方'} ${my} - ${aiScore} ${MATCH_CONTEXT.opponent}`);log(result);running=false;$('#state').textContent='已结束';if(MATCH_CONTEXT.mode==='pvp'){pvpSync('finish',{result,home:my,away:aiScore,hostName:PVP.hostName,guestName:PVP.guestName,hostRows:hostResultRows(),guestRows:guestResultRows(),matchLog:[...logData]});setTimeout(()=>{PVP.started=false},300)}showResult(result)
+ const result=my>aiScore?'🎉 胜利！':my===aiScore?'🤝 平局':'😢 失利';log('===== 全场结束 =====');log(MATCH_CONTEXT.mode==='pvp'?`🏆 最终比分：主队 ${PVP.hostName} ${my} - ${aiScore} 客队 ${PVP.guestName}`:`🏆 最终比分：${LOBBY.currentUser||'我方'} ${my} - ${aiScore} ${MATCH_CONTEXT.opponent}`);log(result);appendMatchRosterSummary();running=false;$('#state').textContent='已结束';if(MATCH_CONTEXT.mode==='pvp'){pvpSync('finish',{result,home:my,away:aiScore,hostName:PVP.hostName,guestName:PVP.guestName,hostRows:hostResultRows(),guestRows:guestResultRows(),matchLog:[...logData]});setTimeout(()=>{PVP.started=false},300)}showResult(result)
 }
 function scoreFromPerfValue(v){
  return Math.max(4,Math.min(10,(Number(v)||5.5)+1));
 }
 function hostResultRows(){
- return Object.entries(perf)
-  .filter(([,v])=>Number(v)>0)
-  .map(([id,v])=>({id:+id,name:P[id]?.name||`球员${id}`,score:scoreFromPerfValue(v)}))
-  .sort((a,b)=>b.score-a.score);
+ return homeMatchRosterRows();
 }
 function guestResultRows(){
- return Object.entries(PVP.guestPerf||{})
-  .filter(([,v])=>Number(v)>0)
-  .map(([id,v])=>({id:+id,name:P[id]?.name||`球员${id}`,score:scoreFromPerfValue(v)}))
-  .sort((a,b)=>b.score-a.score);
+ return guestMatchRosterRows();
 }
 function renderTeamScores(title,rows,cls=''){
- return `<section class="result-team ${cls}"><h3>${esc(title)}</h3>${(rows||[]).map(x=>`<div class="rating"><span>${esc(x.name||'')}</span><b>${Number(x.score||6.5).toFixed(1)}分</b></div>`).join('')||'<p class="mini">暂无评分数据</p>'}</section>`;
+ return `<section class="result-team ${cls}"><h3>${esc(title)}</h3>${(rows||[]).map(x=>`<div class="rating"><span>${x.status?`<span class="badge">${esc(x.status)}</span> `:''}${esc(x.name||'')}${x.pos?` · ${esc(x.pos)}`:''}</span><b>${Number(x.score||6.5).toFixed(1)}分</b></div>`).join('')||'<p class="mini">暂无评分数据</p>'}</section>`;
 }
 function showPvpResult(payload={},localSide='home'){
  const home=Number(payload.home)||0,away=Number(payload.away)||0;
@@ -1583,8 +1637,8 @@ function showResult(result){
    },'home');
    return;
  }
- let arr=Object.entries(perf).filter(([id,v])=>v>0).map(([id,v])=>({id:+id,name:P[id].name,score:Math.min(10,Math.round(((v+1)+Number.EPSILON)*10)/10)})).sort((a,b)=>b.score-a.score),unused=Object.entries(perf).filter(([id,v])=>v===0).map(([id])=>P[id].name);
- $('#modalbox').innerHTML=`<h2>${result}</h2><p>最终比分：<b>${esc(LOBBY.currentUser||'我方')} ${my} : ${aiScore} ${esc(MATCH_CONTEXT.opponent)}</b></p><h3>本场球员表现评分</h3>${arr.map(x=>`<div class="rating"><span>${esc(x.name)}</span><b>${x.score}分</b></div>`).join('')}${unused.length?`<p class="mini">📌 未上场球员：${unused.map(esc).join('、')}</p>`:''}<button class="primary" id="downloadLog">保存比赛记录</button><button onclick="closeModal()">关闭</button>`;
+ const arr=homeMatchRosterRows(),unused=Object.entries(perf).filter(([id,v])=>v===0).map(([id])=>P[id].name);
+ $('#modalbox').innerHTML=`<h2>${result}</h2><p>最终比分：<b>${esc(LOBBY.currentUser||'我方')} ${my} : ${aiScore} ${esc(MATCH_CONTEXT.opponent)}</b></p><h3>本场球员表现评分</h3>${arr.map(x=>`<div class="rating"><span><span class="badge">${esc(x.status)}</span> ${esc(x.name)}${x.pos?` · ${esc(x.pos)}`:''}</span><b>${Number(x.score).toFixed(1)}分</b></div>`).join('')}${unused.length?`<p class="mini">📌 未上场球员：${unused.map(esc).join('、')}</p>`:''}<button class="primary" id="downloadLog">保存比赛记录</button><button onclick="closeModal()">关闭</button>`;
  $('#modal').classList.add('show');$('#downloadLog').onclick=downloadLog;
 }
 function showGuestResult(payload={}){
@@ -2920,4 +2974,4 @@ window.clearInvite=clearInvite;
  });
 })();
 
-$('#ai').oninput=e=>{$('#aiVal').textContent=e.target.value;currentAbility=+e.target.value;AI_PLAYERS=generateAI(currentAbility)};$('#start').onclick=handleStartButton;$('#reset').onclick=reset;$('#playersBtn').onclick=showPlayers;$('#aiBtn').onclick=showAI;setupLineup();currentAbility=5;AI_PLAYERS=generateAI(5);collect();idleScene();</script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script></body></html>
+$('#ai').oninput=e=>{$('#aiVal').textContent=e.target.value;currentAbility=+e.target.value;AI_PLAYERS=generateAI(currentAbility)};$('#start').onclick=handleStartButton;$('#reset').onclick=reset;$('#playersBtn').onclick=showPlayers;$('#aiBtn').onclick=showAI;setupLineup();currentAbility=5;AI_PLAYERS=generateAI(5);collect();idleScene();</script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script></body></html>
