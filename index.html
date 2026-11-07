@@ -1074,7 +1074,7 @@ if(type==='关键防守'){
   const msg=kind==='铲球'?`🩸 干净铲断！${p.name}精准下铲阻断进攻！`:kind==='单防'?`🛡️ 一夫当关！${p.name}成功单防对手！`:kind==='抢断'?`🔪 精准抢断！${p.name}断下皮球！`:kind==='对抗'?`💪 强硬对抗！${p.name}在身体对抗中夺回球权！`:kind==='解围'?`🚧 关键解围！${p.name}化解门前险情！`:`🧱 预判拦截！${p.name}提前切断传球线路！`;
   log(msg);updatePerf(p.id,kind==='单防'?1.15:1.0);await animDefense(p.id,kind);return {goal:0};
  }
- log(`⚠️ ${p.name}${kind==='铲球'?'铲球':'防守'}未能成功，对手继续进攻。`);updatePerf(p.id,-.18);await animDefense(p.id,kind);return {goal:0};
+ log(`⚠️ ${p.name}${kind==='铲球'?'铲球':'防守'}成功，对手未能继续进攻。`);updatePerf(p.id,-.18);await animDefense(p.id,kind);return {goal:0};
 }
 let core=A.filter(p=>[9,11,19].includes(p.id)),other=A.filter(p=>![9,11,19].includes(p.id)),p=weighted(core.concat(other),Array(core.length).fill(50).concat(Array(other.length).fill(10)));
 if(p){
