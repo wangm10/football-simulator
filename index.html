@@ -1924,6 +1924,7 @@ async function setupRealtime(){
    .subscribe(async status=>{
      if(status==='SUBSCRIBED'){
        startLobbyHeartbeat();
+       await trackLobbyPresence();
        syncPresence();
      }else if(status==='CLOSED'||status==='CHANNEL_ERROR'||status==='TIMED_OUT'){
        stopLobbyHeartbeat();
@@ -1979,28 +1980,38 @@ function isSelfInvite(inv){return !!inv&&sameUserId(inv.sender_id,inv.receiver_i
 
 function syncPresence(){
  if(!LOBBY.presenceChannel)return;
- const state=LOBBY.presenceChannel.presenceState();
- const now=Date.now();
+
+ // Supabase Presence 本身就是在线状态的权威来源。
+ // 不再使用 online_at + 90 秒超时二次判定，否则手机切后台后
+ // 自定义心跳暂停，会把仍连接在 Presence 里的玩家误判为离线。
+ const state=LOBBY.presenceChannel.presenceState()||{};
  const map=new Map();
 
  Object.entries(state).forEach(([presenceKey,rows])=>{
-  (rows||[]).forEach(p=>{
+  (Array.isArray(rows)?rows:[rows]).forEach(p=>{
+   if(!p)return;
+
    const keyId=String(presenceKey||'');
-   const payloadId=String(p?.user_id||'');
+   const payloadId=String(p.user_id||'');
    const id=payloadId||keyId;
-   if(!id||sameUserId(id,LOBBY.currentUserId)||sameUserId(keyId,LOBBY.currentUserId)||sameUserId(payloadId,LOBBY.currentUserId))return;
+
+   // 永远排除自己；同一账号多标签页/多连接会在下面按 id 去重。
+   if(!id||
+      sameUserId(id,LOBBY.currentUserId)||
+      sameUserId(keyId,LOBBY.currentUserId)||
+      sameUserId(payloadId,LOBBY.currentUserId))return;
 
    const stamp=presenceStamp(p);
-   if(stamp && now-stamp>90000)return;
-
    const item={
      id,
      name:p.name||'玩家',
      level:Number(p.level)||5,
      status:p.status||'空闲',
-     online_at:p.online_at,
+     online_at:p.online_at||'',
      _stamp:stamp
    };
+
+   // 同一个用户存在多个 Presence meta 时，保留最新的一条。
    const prev=map.get(id);
    if(!prev||item._stamp>=prev._stamp)map.set(id,item);
   });
@@ -2009,6 +2020,7 @@ function syncPresence(){
  LOBBY.online=[...map.values()]
    .map(({_stamp,...p})=>p)
    .sort((a,b)=>a.name.localeCompare(b.name,'zh-CN'));
+
  renderOnline();
  renderPrivateTargets();
  renderPrivateChat();
