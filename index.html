@@ -5,7 +5,7 @@
 :root{--bg:#07150f;--panel:#10261a;--line:#2b5b3d;--accent:#9cff57;--text:#eef7ef;--muted:#a8b7ac;--danger:#ff5f6d;--gold:#ffd166;--blue:#65b7ff}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 8%,#173b27,#07150f 60%);color:var(--text);font-family:Inter,"Microsoft YaHei",system-ui,sans-serif;min-height:100vh}.app{max-width:1500px;margin:auto;padding:18px}.top{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-bottom:14px}.brand{font-weight:900;font-size:22px}.score{font-size:34px;font-weight:950;letter-spacing:3px}.minute{text-align:right;font-weight:900}.layout{display:grid;grid-template-columns:330px minmax(0,1fr) 350px;gap:14px}.panel{background:rgba(13,34,23,.94);border:1px solid #28513a;border-radius:18px;box-shadow:0 14px 45px #0006;padding:14px}.panel h3{margin:0 0 10px;font-size:16px}.controls label{display:block;color:var(--muted);font-size:12px;margin:11px 0 6px}.controls select,.controls input,.controls button,.modalbox select,.modalbox button{width:100%;background:#0b1d14;color:white;border:1px solid #315a42;border-radius:10px;padding:9px}.controls button,.modalbox button{cursor:pointer;font-weight:850}.controls button.primary,.modalbox button.primary{background:linear-gradient(135deg,#7be64c,#b8ff79);color:#10210f;border:0;margin-top:12px}.controls button:disabled{opacity:.45;cursor:not-allowed}.lineup{max-height:520px;overflow:auto;padding-right:4px}.row{display:grid;grid-template-columns:72px 1fr;gap:8px;align-items:center;margin:7px 0}.row span{font-size:12px;color:#b9c8bd}.mini{font-size:12px;color:var(--muted);line-height:1.55}.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.chip{padding:4px 7px;border:1px solid #315a42;border-radius:999px;font-size:11px;background:#0a1b12}
 .stage-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.zone-badge{font-size:12px;padding:5px 9px;border:1px solid #548065;border-radius:999px;color:#d9f6df}.pitch{position:relative;aspect-ratio:16/10;border-radius:22px;overflow:hidden;background:repeating-linear-gradient(90deg,#1e7d42 0 10%,#237f45 10% 20%);border:3px solid #d8f3dc;box-shadow:inset 0 0 50px #0004}.pitch:before{content:"";position:absolute;inset:5%;border:2px solid #ffffffc8;border-radius:4px}.pitch.back:after{content:"";position:absolute;left:5%;top:25%;bottom:25%;width:22%;border:2px solid #ffffffc8;border-left:0}.pitch.mid:after{content:"";position:absolute;left:50%;top:5%;bottom:5%;border-left:2px solid #ffffffc8}.pitch.front:after{content:"";position:absolute;right:5%;top:25%;bottom:25%;width:22%;border:2px solid #ffffffc8;border-right:0}.goal-local{display:none;position:absolute;top:28%;height:44%;width:10%;border:3px solid #fff;z-index:1;box-shadow:inset 0 0 14px #ffffff22}.pitch.back .goal-local.left,.pitch.front .goal-local.right{display:block}.goal-local.left{left:-5%}.goal-local.right{right:-5%}.center-circle{display:none;position:absolute;left:50%;top:50%;width:22%;aspect-ratio:1;border:2px solid #ffffffc8;border-radius:50%;transform:translate(-50%,-50%)}.pitch.mid .center-circle{display:block}
-.player{position:absolute;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:900;border:2px solid #fff;box-shadow:0 5px 12px #0008;transform:translate(-50%,-50%);transition:.32s cubic-bezier(.2,.8,.2,1);z-index:5}.home{background:#d6ff4b;color:#132111}.away{background:#ff5f6d}.player.pvp-host{background:#ff5f6d;color:#fff}.player.pvp-guest{background:#65b7ff;color:#071522}.player small{position:absolute;top:46px;white-space:nowrap;font-size:10px;color:white;text-shadow:0 2px 3px #000;max-width:110px}.player .role{position:absolute;bottom:45px;font-size:9px;color:#fff;background:#0009;border-radius:8px;padding:1px 5px;white-space:nowrap}.ball{position:absolute;width:18px;height:18px;border-radius:50%;background:white;border:2px solid #111;transform:translate(-50%,-50%);z-index:10;left:50%;top:50%;box-shadow:0 3px 7px #0008;transition:.32s cubic-bezier(.2,.8,.2,1)}.ball.hidden{opacity:0}.event-card{position:relative;width:100%;height:92px;background:#07140eee;border:1px solid #97f56d88;border-radius:14px;padding:8px 12px;text-align:center;z-index:30;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease;margin:0 0 8px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}.event-card.show{opacity:1;visibility:visible}.event-title{font-size:21px;font-weight:950}.event-sub{color:#d6ead8;margin-top:4px}.flash{position:absolute;inset:0;z-index:20;pointer-events:none;opacity:0}.flash.goal{background:radial-gradient(circle,#fff9,#7cff4477 30%,transparent 70%)}.flash.danger{background:radial-gradient(circle,#ffedd5aa,#ff3d3d66 35%,transparent 70%)}.flash.gold{background:radial-gradient(circle,#fff7caaa,#ffd16666 35%,transparent 70%)}.flash.show{animation:flash .8s ease}@keyframes flash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}.shake{animation:shake .35s linear 2}.log{height:380px;overflow:auto;background:#09180f;border-radius:12px;padding:10px;font-size:13px;line-height:1.5}.log div{border-bottom:1px solid #1d3828;padding:7px 0}.log div.goal-log{font-weight:950;font-size:14px;border:1px solid #ffd16688;border-left:5px solid var(--gold);border-radius:8px;padding:8px 9px;margin:5px 0;background:#2a2108;color:#fff6cf}.fitness{max-height:none;overflow:visible}.fitrow{display:grid;grid-template-columns:72px 48px 1fr 34px;gap:7px;align-items:center;font-size:11px;margin:4px 0;min-height:18px}.live-score{font-weight:900;color:#ffd166;text-align:center;background:#0b1d14;border:1px solid #315a42;border-radius:7px;padding:2px 3px}.fitness-head{display:grid;grid-template-columns:72px 48px 1fr 34px;gap:7px;color:#8fae98;font-size:10px;margin:0 0 5px}.fitness-head span:nth-child(2),.fitness-head span:nth-child(4){text-align:center}.bar{height:7px;border-radius:9px;background:#1b3526;overflow:hidden}.bar i{display:block;height:100%;transition:width .25s,background .25s}.bar i.fit-green{background:#9cff57}.bar i.fit-yellow{background:#ffd166}.bar i.fit-red{background:#ff5f6d}.badge{font-size:11px;border:1px solid #47735a;border-radius:99px;padding:3px 7px;color:#cce7d3}.modal{position:fixed;inset:0;background:#000a;display:none;place-items:center;z-index:100;padding:18px}.modal.show{display:grid}.modalbox{width:min(620px,96vw);max-height:88vh;overflow:auto;background:#10261a;border:1px solid #3e6d50;border-radius:18px;padding:18px;box-shadow:0 20px 70px #000}.modalbox h2,.modalbox h3{margin-top:0}.rating{display:flex;justify-content:space-between;gap:10px;padding:7px;border-bottom:1px solid #294334}.choicegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.choicegrid button{margin:0}.dangerbtn{border-color:#8d3d45!important;color:#ffb2b9!important}.stats{margin-top:10px;padding:10px;border:1px solid #284c37;border-radius:12px;background:#09180f;font-size:11px;color:#bdd0c1}.stats b{color:#fff}.result-dual{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}.result-team{border:1px solid #315a42;border-radius:14px;padding:10px;background:#09180f}.result-team h3{margin:0 0 8px}.result-team .rating{padding:6px 4px}.result-team.local{border-color:#75d84c}.result-team.away-side{border-color:#4b8fc9}@media(max-width:680px){.result-dual{grid-template-columns:1fr}}@media(max-width:1000px){.layout{grid-template-columns:1fr}.top{grid-template-columns:1fr auto}.minute{grid-column:1/-1;text-align:left}.lineup{max-height:340px}}
+.player{position:absolute;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:900;border:2px solid #fff;box-shadow:0 5px 12px #0008;transform:translate(-50%,-50%);transition:.32s cubic-bezier(.2,.8,.2,1);z-index:5}.home{background:#d6ff4b;color:#132111}.away{background:#ff5f6d}.player.pvp-host{background:#ff5f6d;color:#fff}.player.pvp-guest{background:#65b7ff;color:#071522}.player small{position:absolute;top:46px;white-space:nowrap;font-size:10px;color:white;text-shadow:0 2px 3px #000;max-width:110px}.player .role{position:absolute;bottom:45px;font-size:9px;color:#fff;background:#0009;border-radius:8px;padding:1px 5px;white-space:nowrap}.ball{position:absolute;width:18px;height:18px;border-radius:50%;background:white;border:2px solid #111;transform:translate(-50%,-50%);z-index:10;left:50%;top:50%;box-shadow:0 3px 7px #0008;transition:.32s cubic-bezier(.2,.8,.2,1)}.ball.hidden{opacity:0}.event-card{position:relative;width:100%;height:92px;background:#07140eee;border:1px solid #97f56d88;border-radius:14px;padding:8px 12px;text-align:center;z-index:30;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease;margin:0 0 8px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}.event-card.show{opacity:1;visibility:visible}.event-title{font-size:21px;font-weight:950}.event-sub{color:#d6ead8;margin-top:4px}.flash{position:absolute;inset:0;z-index:20;pointer-events:none;opacity:0}.flash.goal{background:radial-gradient(circle,#fff9,#7cff4477 30%,transparent 70%)}.flash.danger{background:radial-gradient(circle,#ffedd5aa,#ff3d3d66 35%,transparent 70%)}.flash.gold{background:radial-gradient(circle,#fff7caaa,#ffd16666 35%,transparent 70%)}.flash.show{animation:flash .8s ease}@keyframes flash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}.shake{animation:shake .35s linear 2}.log{height:380px;overflow:auto;background:#09180f;border-radius:12px;padding:10px;font-size:13px;line-height:1.5}.log div{border-bottom:1px solid #1d3828;padding:7px 0}.log div.goal-log{font-weight:950;font-size:15px;border:2px solid var(--gold);border-left:7px solid var(--gold);border-radius:9px;padding:9px 10px;margin:7px 0;background:#3a2b06;color:#fff8d8;box-shadow:0 0 0 2px #ffd16633,0 0 18px #ffd16622}.fitness{max-height:none;overflow:visible}.fitrow{display:grid;grid-template-columns:72px 48px 1fr 34px;gap:7px;align-items:center;font-size:11px;margin:4px 0;min-height:18px}.live-score{font-weight:900;color:#ffd166;text-align:center;background:#0b1d14;border:1px solid #315a42;border-radius:7px;padding:2px 3px}.fitness-head{display:grid;grid-template-columns:72px 48px 1fr 34px;gap:7px;color:#8fae98;font-size:10px;margin:0 0 5px}.fitness-head span:nth-child(2),.fitness-head span:nth-child(4){text-align:center}.bar{height:7px;border-radius:9px;background:#1b3526;overflow:hidden}.bar i{display:block;height:100%;transition:width .25s,background .25s}.bar i.fit-green{background:#9cff57}.bar i.fit-yellow{background:#ffd166}.bar i.fit-red{background:#ff5f6d}.badge{font-size:11px;border:1px solid #47735a;border-radius:99px;padding:3px 7px;color:#cce7d3}.modal{position:fixed;inset:0;background:#000a;display:none;place-items:center;z-index:100;padding:18px}.modal.show{display:grid}.modalbox{width:min(620px,96vw);max-height:88vh;overflow:auto;background:#10261a;border:1px solid #3e6d50;border-radius:18px;padding:18px;box-shadow:0 20px 70px #000}.modalbox h2,.modalbox h3{margin-top:0}.rating{display:flex;justify-content:space-between;gap:10px;padding:7px;border-bottom:1px solid #294334}.choicegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.choicegrid button{margin:0}.dangerbtn{border-color:#8d3d45!important;color:#ffb2b9!important}.stats{margin-top:10px;padding:10px;border:1px solid #284c37;border-radius:12px;background:#09180f;font-size:11px;color:#bdd0c1}.stats b{color:#fff}.result-dual{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}.result-team{border:1px solid #315a42;border-radius:14px;padding:10px;background:#09180f}.result-team h3{margin:0 0 8px}.result-team .rating{padding:6px 4px}.result-team.local{border-color:#75d84c}.result-team.away-side{border-color:#4b8fc9}@media(max-width:680px){.result-dual{grid-template-columns:1fr}}@media(max-width:1000px){.layout{grid-template-columns:1fr}.top{grid-template-columns:1fr auto}.minute{grid-column:1/-1;text-align:left}.lineup{max-height:340px}}
 
 
 .screen-shell{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 8%,#173b27,#07150f 60%)}
@@ -349,8 +349,9 @@ function decorateMatchText(text){
    const awayIds=new Set((PVP.isHost?PVP.remoteLineup:PVP.localLineup||[]).map(x=>+x.id));
    Object.entries(P).forEach(([id,p])=>{
      const re=new RegExp(p.name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g');
-     if(homeIds.has(+id))out=out.replace(re,ownedName(p.name,'home'));
-     else if(awayIds.has(+id))out=out.replace(re,ownedName(p.name,'away'));
+     const inHome=homeIds.has(+id),inAway=awayIds.has(+id);
+     if(inHome&&!inAway)out=out.replace(re,ownedName(p.name,'home'));
+     else if(inAway&&!inHome)out=out.replace(re,ownedName(p.name,'away'));
    });
    out=out.replace(/AI/g,sideOwner('away'));
  }else{
@@ -370,7 +371,7 @@ function withLogMinute(t){
 }
 function isGoalLogText(t){
  const s=String(t);
- if(/未进|未能进球|未能破门|未能命中|没有进球|未得分|未能得分|射偏|打偏|踢偏|顶偏|击中门框|击中立柱|击中横梁|扑出|错失|机会|失误.*未/.test(s))return false;
+ if(/未进|未能进球|未能破门|未能命中|没有进球|未得分|未能得分|射偏|打偏|踢偏|顶偏|击中门框|击中立柱|击中横梁|扑出|错失|未能形成(?:有效)?射门|失误.*未/.test(s))return false;
  return /破门|球进了|进球有效|点球命中|世界波|第\d+轮.*(?:主队|客队).*命中/.test(s);
 }
 function goalMarkedText(t){
@@ -393,6 +394,20 @@ function logTeam(side,t){
  out=decorateMatchText(out);
  names.forEach((name,i)=>{out=out.replaceAll(`§§TEAM${i}§§`,`${owner}的${name}`)});
  out=withLogMinute(out);appendLogRaw(out);pvpSync('log',{text:out});
+}
+function logOwned(parts){
+ if(MATCH_CONTEXT.mode!=='pvp'){
+  const plain=(parts||[]).map(x=>typeof x==='string'?x:(x?.name||'')).join('');
+  log(plain);return;
+ }
+ let out=(parts||[]).map(x=>{
+  if(typeof x==='string')return x;
+  if(!x||!x.name)return '';
+  return `${sideOwner(x.side||'home')}的${x.name}`;
+ }).join('');
+ out=withLogMinute(out);
+ appendLogRaw(out);
+ pvpSync('log',{text:out});
 }
 function weighted(items,weights){if(!items.length)return null;let sum=weights.reduce((a,b)=>a+Math.max(0,b),0);if(sum<=0)return pick(items);let r=MATCH_RANDOM()*sum;for(let i=0;i<items.length;i++){r-=Math.max(0,weights[i]);if(r<=0)return items[i]}return items[items.length-1]}
 function success(attackerAttr,defenderAttr,ability=5){
@@ -577,40 +592,43 @@ async function animOurPenaltyWon(pid){clearScene('front');addActor('home',pid,P[
 async function animAIPenaltyWon(mistakeId){clearScene('back');addActor('away',10,AI_PLAYERS[10]?.name||'AI边锋',51,35,'突破');addActor('home',mistakeId,P[mistakeId].name,34,52,'防守');placeBall(45,35);eventCard('⚠️ AI突入禁区',`AI进攻球员突破，${P[mistakeId].name}回追防守`,'danger');await sleep(430);moveActor('away',10,29,42);placeBall(23,42);moveActor('home',mistakeId,27,53);await sleep(360);moveActor('home',mistakeId,25,43);moveActor('away',10,22,51);placeBall(16,45);eventCard('🩸 送点',`${P[mistakeId].name}禁区内犯规，裁判判罚AI点球`,'danger');await sleep(780);await finishAnim()}
 async function animPenalty(side,shooterId,shooterName,shootDir,keeperDir,goal,resultDetail=''){let homeAttack=side==='home';clearScene(homeAttack?'front':'back');let sy=50, targetY=shootDir==='左'?(homeAttack?34:66):shootDir==='右'?(homeAttack?66:34):50, keeperY=keeperDir==='左'?(homeAttack?34:66):keeperDir==='右'?(homeAttack?66:34):50;if(homeAttack){addActor('home',shooterId,shooterName,69,50,'主罚');addActor('away',1,AI_PLAYERS[1].name,92,50,'门将');placeBall(76,50)}else{addActor('away',9,AI_PLAYERS[9]?.name||'AI中锋',31,50,'主罚');let keeper=starting.find(p=>p.pos==='门将');addActor('home',keeper.id,keeper.name,8,50,'门将');placeBall(24,50)}eventCardOwned(goal?'⚽ 点球命中！':(keeperDir===shootDir?'🧤 点球被扑出':'❌ 点球未能命中'),[{name:shooterName,side},`射向${shootDir}｜门将判断${keeperDir}｜${resultDetail}`],goal?(homeAttack?'goal':'danger'):'gold');await sleep(650);if(homeAttack){moveActor('away',1,88,keeperY);placeBall(goal?98:keeperDir===shootDir?87:96,targetY)}else{let keeper=starting.find(p=>p.pos==='门将');moveActor('home',keeper.id,12,keeperY);placeBall(goal?2:keeperDir===shootDir?13:4,targetY)}if(goal)goalShake();await sleep(850);await finishAnim()}
 async function animSave(keeperId,label='神扑'){clearScene('back');addActor('away',9,AI_PLAYERS[9]?.name||'AI中锋',44,50,'射手');addActor('home',keeperId,P[keeperId].name,10,50,'门将');placeBall(37,50);eventCard('🧤 '+label,`${P[keeperId].name}化解 AI 射门`,'goal');await sleep(500);placeBall(16,42);moveActor('home',keeperId,13,42);await sleep(450);placeBall(31,24);await sleep(500);await finishAnim()}
-async function animAIAttack(text,scored,keeperId){
+async function animAIAttack(text,scored,keeperId,scorerName=null,scorerSlot=9){
  clearScene('back');
- addActor('away',9,AI_PLAYERS[9]?.name||'AI中锋',42,50,'射手');
+ const name=scorerName||AI_PLAYERS[scorerSlot]?.name||AI_PLAYERS[9]?.name||'AI中锋';
+ addActor('away',scorerSlot,name,42,50,'射手');
  addActor('home',keeperId,P[keeperId].name,10,50,'门将');
  placeBall(35,50);
  eventCard('⚡ AI反击射门',text,'danger');
  await sleep(520);
  if(scored){
   let targetY=58; placeBall(2,targetY); moveActor('home',keeperId,12,53);
-  eventCard('❌ AI进球！',`${text}；皮球入网，比分已更新。`,'danger');
+  eventCard('❌ AI进球！',`${name}完成射门破门，比分已更新。`,'danger');
   goalShake();
  }else{
   placeBall(15,36); moveActor('home',keeperId,13,36);
-  eventCard('🧤 AI射门未进',`${P[keeperId].name}完成扑救，AI未能得分。`,'goal');
+  eventCard('🧤 AI射门未进',`${P[keeperId].name}扑出${name}的射门。`,'goal');
  }
  await sleep(760); await finishAnim();
 }
-async function animMistake(mistakeId,keeperId,scored){
+async function animMistake(mistakeId,keeperId,scored,scorer=null){
  clearScene('back');
+ const scorerName=scorer?.name||AI_PLAYERS[9]?.name||'AI中锋';
+ const scorerSlot=scorer?.slot||scorer?.id||9;
  addActor('home',mistakeId,P[mistakeId].name,54,60,'失误球员');
- addActor('away',9,AI_PLAYERS[9]?.name||'AI中锋',43,48,'抢断后单刀');
+ addActor('away',scorerSlot,scorerName,43,48,'抢断后单刀');
  addActor('home',keeperId,P[keeperId].name,10,50,'门将');
  placeBall(60,60);
- eventCard('⚠️ 后场重大失误',`${P[mistakeId].name}传球被断，AI形成单刀`,'danger');
+ eventCard('⚠️ 后场重大失误',`${P[mistakeId].name}传球被断，${scorerName}获得单刀机会`,'danger');
  await sleep(450); placeBall(48,48);
- await sleep(350); moveActor('away',9,30,48); placeBall(24,48);
+ await sleep(350); moveActor('away',scorerSlot,30,48); placeBall(24,48);
  await sleep(380);
  if(scored){
   let targetY=58; placeBall(2,targetY); moveActor('home',keeperId,12,53);
-  eventCard('❌ 失误后丢球',`AI单刀射门命中，皮球入网，比分已更新。`,'danger');
+  eventCard('❌ 失误后丢球',`${scorerName}单刀推射破门，比分已更新。`,'danger');
   goalShake();
  }else{
   placeBall(15,36); moveActor('home',keeperId,13,36);
-  eventCard('🧤 失误后化险',`${P[keeperId].name}扑出AI单刀，未能形成进球。`,'goal');
+  eventCard('🧤 失误后化险',`${P[keeperId].name}扑出${scorerName}的单刀射门。`,'goal');
  }
  await sleep(700); await finishAnim();
 }
@@ -971,7 +989,7 @@ async function doAIPenalty(ability,mistake){
      );
    }
  }
- const shooterName=guestShooter?.name||(MATCH_CONTEXT.mode==='pvp'?PVP.guestName+'球员':'AI球员');
+ const shooterName=guestShooter?.name||(MATCH_CONTEXT.mode==='pvp'?PVP.guestName+'球员':(AI_PLAYERS[9]?.name||'AI中锋'));
  let guess;
  if(MATCH_CONTEXT.mode==='pvp'){
    [shootDir,guess]=await Promise.all([
@@ -991,13 +1009,17 @@ async function doAIPenalty(ability,mistake){
   if(guestShooter)guestUpdatePerf(guestShooter.id,.90);
   applyConcededGoalPenalties(mistake.id,'penalty');
   if(shootDir===guess)updatePerf(keeper.id,.35);
-  log(`❌ 点球结果：${shooterName}射向${shootDir}，${keeper.name}扑向${guess}；${detail} 比分 ${my} : ${aiScore}`);
+  if(MATCH_CONTEXT.mode==='pvp'&&guestShooter){
+   logOwned(['⚽ 点球结果：',{name:guestShooter.name,side:'away'},`射向${shootDir}，`,{name:keeper.name,side:'home'},`扑向${guess}；${detail} 比分 ${my} : ${aiScore}`]);
+  }else log(`❌ 点球结果：${shooterName}射向${shootDir}，${keeper.name}扑向${guess}；${detail} 比分 ${my} : ${aiScore}`);
  }else{
   detail=shootDir===guess?`${keeper.name}方向判断正确，成功扑出点球。`:`${shooterName}没有命中目标，点球偏出。`;
   if(guestShooter)guestUpdatePerf(guestShooter.id,-.60);
   updatePerf(mistake.id,-.8);
   updatePerf(keeper.id,shootDir===guess?1.20:.15);
-  log(`🧤 点球结果：${shooterName}射向${shootDir}，${keeper.name}扑向${guess}；${detail} 比分 ${my} : ${aiScore}`);
+  if(MATCH_CONTEXT.mode==='pvp'&&guestShooter){
+   logOwned(['🧤 点球结果：',{name:guestShooter.name,side:'away'},`射向${shootDir}，`,{name:keeper.name,side:'home'},`扑向${guess}；${detail} 比分 ${my} : ${aiScore}`]);
+  }else log(`🧤 点球结果：${shooterName}射向${shootDir}，${keeper.name}扑向${guess}；${detail} 比分 ${my} : ${aiScore}`);
  }
  await animPenalty('away',guestShooter?.slot||9,shooterName,shootDir,guess,goal,detail);
  return {goal:goal?-1:0}
@@ -1010,7 +1032,7 @@ async function keyEvent(ability,forcedType=null){
  w[1]=Math.max(8,w[1]+difficultyShift*.45);
  w[4]=Math.max(3,w[4]+difficultyShift*.55);
  let type=forcedType||weighted(['进球','错失良机','关键防守','关键推进','我方失误'],w),A=attackers();
-if(type==='我方失误'){let mistakeType=MATCH_RANDOM()<.25?'送点':'传球失误',keeper=starting.find(p=>p.pos==='门将');if(mistakeType==='传球失误'){let back=starting.filter(p=>['左后卫','右后卫','左中卫','右中卫','后腰'].some(pos=>p.pos.includes(pos)));if(back.length){let p=weighted(back,back.map(x=>11-attr(x.id,'传球',5)));log(`⚠️ 重大失误！${p.name}后场传球被断！AI形成单刀机会！`);let concede=randInt(0,100)<aiGoalChance(attr(keeper.id,'反应',5),aiAttr(9,'单刀',6),ability);if(concede){recordGoal('away');if(MATCH_CONTEXT.mode==='pvp')guestAttackOutcome(true);applyConcededGoalPenalties(p.id);log('AI球员冷静推射，球进了！');await animMistake(p.id,keeper.id,true);return {goal:-1}}updatePerf(p.id,-.8);updatePerf(keeper.id,1.25);log(`🧤 ${keeper.name}出击神勇，将单刀球扑出！`);await animMistake(p.id,keeper.id,false);return {goal:0}}type='关键防守'}else{let prone=starting.filter(p=>P[p.id].attrs['送点']!=null);if(prone.length){let p=weighted(prone,prone.map(x=>11-attr(x.id,'送点',9)));log(`🩸 头脑发热！${p.name}在禁区内犯规！裁判判罚点球！`);return await doAIPenalty(ability,p)}type='关键防守'}}
+if(type==='我方失误'){let mistakeType=MATCH_RANDOM()<.25?'送点':'传球失误',keeper=starting.find(p=>p.pos==='门将');if(mistakeType==='传球失误'){let back=starting.filter(p=>['左后卫','右后卫','左中卫','右中卫','后腰'].some(pos=>p.pos.includes(pos)));if(back.length){let p=weighted(back,back.map(x=>11-attr(x.id,'传球',5)));log(`⚠️ 重大失误！${p.name}后场传球被断！AI形成单刀机会！`);let concede=randInt(0,100)<aiGoalChance(attr(keeper.id,'反应',5),aiAttr(9,'单刀',6),ability);if(concede){recordGoal('away');const scorer=MATCH_CONTEXT.mode==='pvp'?guestAttackOutcome(true):{slot:9,name:AI_PLAYERS[9]?.name||'AI中锋'};applyConcededGoalPenalties(p.id);log(`⚽ ${p.name}后场失误后，${scorer?.name||AI_PLAYERS[9]?.name||'AI中锋'}抓住单刀机会推射破门！`);await animMistake(p.id,keeper.id,true,scorer);return {goal:-1}}updatePerf(p.id,-.8);updatePerf(keeper.id,1.25);log(`🧤 ${keeper.name}出击神勇，将单刀球扑出！`);await animMistake(p.id,keeper.id,false);return {goal:0}}type='关键防守'}else{let prone=starting.filter(p=>P[p.id].attrs['送点']!=null);if(prone.length){let p=weighted(prone,prone.map(x=>11-attr(x.id,'送点',9)));log(`🩸 头脑发热！${p.name}在禁区内犯规！裁判判罚点球！`);return await doAIPenalty(ability,p)}type='关键防守'}}
 if(type==='进球'){
  let shoot=weighted(['普通射门','远射','头球','单刀','任意球','点球'],[27,21,17,20,10,7]);
  if(shoot==='点球')return await doOurPenalty(ability);
@@ -1074,7 +1096,7 @@ if(type==='关键防守'){
   const msg=kind==='铲球'?`🩸 干净铲断！${p.name}精准下铲阻断进攻！`:kind==='单防'?`🛡️ 一夫当关！${p.name}成功单防对手！`:kind==='抢断'?`🔪 精准抢断！${p.name}断下皮球！`:kind==='对抗'?`💪 强硬对抗！${p.name}在身体对抗中夺回球权！`:kind==='解围'?`🚧 关键解围！${p.name}化解门前险情！`:`🧱 预判拦截！${p.name}提前切断传球线路！`;
   log(msg);updatePerf(p.id,kind==='单防'?1.15:1.0);await animDefense(p.id,kind);return {goal:0};
  }
- log(`⚠️ ${p.name}${kind==='铲球'?'铲球':'防守'}成功，对手未能继续进攻。`);updatePerf(p.id,-.18);await animDefense(p.id,kind);return {goal:0};
+ log(`⚠️ ${p.name}${kind==='铲球'?'铲球':'防守'}未能成功，对手继续进攻。`);updatePerf(p.id,-.18);await animDefense(p.id,kind);return {goal:0};
 }
 let core=A.filter(p=>[9,11,19].includes(p.id)),other=A.filter(p=>![9,11,19].includes(p.id)),p=weighted(core.concat(other),Array(core.length).fill(50).concat(Array(other.length).fill(10)));
 if(p){
@@ -1189,7 +1211,7 @@ async function guestKeyEvent(ability,forcedType=null){
      const rate=Math.min(50,success(guestAttrPlayer(taker,'任意球',5),attr(keeper.id,'反应',5),5));
      const goal=randInt(0,100)<rate;
      if(goal){recordGoal('away');guestUpdatePerf(taker.id,1.35);applyConcededGoalPenalties(null,'set_piece');logTeam('away',`🎯 ${taker.name}任意球直接破门！`)}
-     else{guestUpdatePerf(taker.id,-.16);updatePerf(keeper.id,.55);logTeam('away',`🧤 ${keeper.name}扑出${taker.name}的任意球！`)}
+     else{guestUpdatePerf(taker.id,-.16);updatePerf(keeper.id,.55);logOwned(['🧤 ',{name:keeper.name,side:'home'},'扑出',{name:taker.name,side:'away'},'的任意球！'])}
      await animAwayFreeKick(taker.slot,taker.name,goal);return {goal:goal?-1:0};
    }
    const g=weighted(A,A.map(x=>guestAttrPlayer(x,shoot==='远射'?'远射':shoot==='头球'?'头球':shoot==='单刀'?'单刀':'把握机会',5)));
@@ -1228,8 +1250,8 @@ async function guestKeyEvent(ability,forcedType=null){
    const guestKeeper=guestStartingPlayers().find(x=>x.pos==='门将');
    const goal=randInt(0,100)<success(attr(hs.id,'把握机会',5),guestAttrPlayer(guestKeeper,'门线',5),5);
    guestUpdatePerf(g.id,-.8);
-   if(goal){recordGoal('home');updatePerf(hs.id,1.2);guestConcededRating('open_play');logTeam('away',`⚠️ ${g.name}后场失误，主队 ${PVP.hostName}的${hs.name}抓住机会破门！`)}
-   else{guestDefensiveCredit('big_save');logTeam('away',`⚠️ ${g.name}后场失误，但客队门将化解主队 ${PVP.hostName}的${hs.name}射门！`)}
+   if(goal){recordGoal('home');updatePerf(hs.id,1.2);guestConcededRating('open_play');logOwned(['⚠️ ',{name:g.name,side:'away'},'后场失误，',{name:hs.name,side:'home'},'抓住机会破门！'])}
+   else{guestDefensiveCredit('big_save');logOwned(['⚠️ ',{name:g.name,side:'away'},'后场失误，但客队门将化解',{name:hs.name,side:'home'},'的射门！'])}
    await animGuestMistake(g,hs,goal);return {goal:goal?1:0};
  }
  return {goal:0};
@@ -1259,7 +1281,7 @@ async function regularAI(ability,half){
  }
  log(half===1?'⚡ AI发动快速反击，获得绝佳得分机会！':'⚡ AI发动反击，获得得分机会！');
  let keeper=starting.find(p=>p.pos==='门将'),concede=randInt(0,100)<aiGoalChance(attr(keeper.id,'门线',5),aiAttr(9,'把握机会',6),ability);
- if(concede){recordGoal('away');const guestStriker=guestAttackOutcome(true);applyConcededGoalPenalties(null,'counter');log(half===1?'❌ 球进了！AI球员推射远角破门！':'❌ 球进了！AI球员门前抢点破门！');await animAIAttack(half===1?'AI快速反击 → 推射远角破门':'AI反击 → 门前抢点破门',true,keeper.id)}
+ if(concede){recordGoal('away');const guestStriker=guestAttackOutcome(true);const scorerName=guestStriker?.name||AI_PLAYERS[9]?.name||'AI中锋';const scorerSlot=guestStriker?.slot||guestStriker?.id||9;applyConcededGoalPenalties(null,'counter');log(half===1?`⚽ ${scorerName}快速反击中推射远角破门！`:`⚽ ${scorerName}反击中门前抢点破门！`);await animAIAttack(half===1?`${scorerName}快速反击后推射远角`:`${scorerName}反击中门前抢点`,true,keeper.id,scorerName,scorerSlot)}
  else{guestAttackOutcome(false);updatePerf(keeper.id,half===1?1.15:.75);log(half===1?`🧤 ${keeper.name}扑出反击单刀！`:`🧤 ${keeper.name}单掌将球托出横梁！化解险情！`);await animSave(keeper.id,half===1?'单刀神扑':'单掌托出横梁')}
 }
 function initMatchInjuries(){
@@ -2392,13 +2414,13 @@ async function handleInviteUpdate(inv){
 
 
 function startPvPGuestMirror(){
- 
+
  if(MATCH_CONTEXT.mode!=='pvp'||PVP.isHost||!PVP.started)return;
  if(PVP.mirrorRunTimer){clearTimeout(PVP.mirrorRunTimer);PVP.mirrorRunTimer=null}
  PVP.mirrorRunStarted=false;
  running=true;
  $('#state').textContent=PVP.subscribed?'比赛中 · 正在实时同步':'比赛中 · 正在重新连接实时进程';
- 
+
  if(PVP.channel&&PVP.subscribed){
    PVP.channel.send({type:'broadcast',event:'sync_request',payload:{userId:LOBBY.currentUserId,ts:Date.now()}}).catch(()=>{});
  }
@@ -2974,4 +2996,4 @@ window.clearInvite=clearInvite;
  });
 })();
 
-$('#ai').oninput=e=>{$('#aiVal').textContent=e.target.value;currentAbility=+e.target.value;AI_PLAYERS=generateAI(currentAbility)};$('#start').onclick=handleStartButton;$('#reset').onclick=reset;$('#playersBtn').onclick=showPlayers;$('#aiBtn').onclick=showAI;setupLineup();currentAbility=5;AI_PLAYERS=generateAI(5);collect();idleScene();</script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script></body></html>
+$('#ai').oninput=e=>{$('#aiVal').textContent=e.target.value;currentAbility=+e.target.value;AI_PLAYERS=generateAI(currentAbility)};$('#start').onclick=handleStartButton;$('#reset').onclick=reset;$('#playersBtn').onclick=showPlayers;$('#aiBtn').onclick=showAI;setupLineup();currentAbility=5;AI_PLAYERS=generateAI(5);collect();idleScene();</script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script></body></html>
